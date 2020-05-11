@@ -1,2 +1,40 @@
-<h1>Hello!</h1>
-<div>derp</div>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Mazes</title>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+
+    <h1 class="header">Mazes</h1>
+    <div class="content">
+      <div class="options">
+        width: <input id="width" value=10 class="dimension"></input>
+        height: <input id="height" value=10 class="dimension"></input>
+        <div>
+          Algorithm:
+          <select id="algorithms">
+          </select>
+        </div>
+        <div>
+          <button type="button" id="startBtn">start</button>
+          <button type="button" id="pauseBtn" disabled>pause</button>
+          <button type="button" id="finishBtn">finish</button>
+          
+        </div>
+        <button type="button" id="stepBtn">step</button>
+        <button type="button" id="resetBtn">reset</button>
+        <div>
+          run speed: 
+          <input type="range" min="1" max="100" value="50" id="runSpeed">
+        </div>
+        <p>longest path</p>
+      </div>
+    <canvas id="myCanvas">
+        Your browser does not support the HTML5 canvas tag.</canvas> 
+    <script type="module" src="./src/app.js"></script>
+    <noscript>You need to enable JavaScript to view the full site.</noscript>
+  </div>
+  </body>
+</html>
