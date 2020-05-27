@@ -1,7 +1,9 @@
+const c = document.getElementById("myCanvas");
+const ctx = c.getContext("2d");
+let imgData;
+
 //p1 and p2 represent cells on the grid
-export let removeEdge = (p1, p2, cellSize) => {
-    let c = document.getElementById("myCanvas");
-    let ctx = c.getContext("2d");
+export const removeEdge = (p1, p2, cellSize) => {
     //p1 needs to be the point upmost or leftmost
     if(p1.x > p2.x || p1.y > p2.y) {
         let temp = p1;
@@ -18,9 +20,8 @@ export let removeEdge = (p1, p2, cellSize) => {
 }
 
 
-export let drawGrid = (height, width, cellSize) => {
-    let c = document.getElementById("myCanvas");
-    let ctx = c.getContext("2d");
+export const drawGrid = (height, width, cellSize) => {
+    ctx.clearRect(0, 0, c.width, c.height);
     for(let i = 0; i <= width; i++) {
         ctx.moveTo(i * cellSize, 0);
         ctx.lineTo(i * cellSize, height * cellSize);
@@ -33,3 +34,26 @@ export let drawGrid = (height, width, cellSize) => {
     }
 }
 
+export const drawPath = (path) => {
+    restoreMaze();
+    ctx.globalCompositeOperation = 'destination-over';
+    // ctx.fillStyle = "#ffffff";
+    // ctx.fillRect(0, 0, c.width, c.height)
+    for(let i = 0; i < path.length; i++) {
+        if(i === 0 || i === path.length - 1) {
+            ctx.fillStyle = "#0000ff";
+        } else {
+            ctx.fillStyle = "#FF0000";
+        }
+        ctx.fillRect(path[i].x * 20, path[i].y * 20, 20, 20);
+    }
+    // restoreMaze();
+}
+
+export const saveMaze = () => {
+    imgData = ctx.getImageData(0, 0, c.width, c.height);
+}
+
+const restoreMaze = () => {
+    ctx.putImageData(imgData, 0, 0);
+}

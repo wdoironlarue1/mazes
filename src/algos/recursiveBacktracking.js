@@ -28,12 +28,13 @@ class recursiveBackTrack extends Algorithm {
         if(neighbors.length > 0) {
             let rand = neighbors[Math.floor(Math.random() * neighbors.length)];
             removeEdge({x, y},{x: rand.x, y: rand.y}, this.cellSize);
+            this.breakWall({x, y},{x: rand.x, y: rand.y});
             this.stack.push({x,y});
             this.currentCell = rand;
             if(this.finish) {
-                this.execute(rand.x, rand.y);
+                this.execute();
             } else {
-                this.timeout = setTimeout(() => this.execute(rand.x, rand.y), this.runSpeed);
+                this.timeout = setTimeout(() => this.execute(), this.runSpeed);
             }
         } else if(this.stack.length === 0) {
             this.callBack();
@@ -66,26 +67,43 @@ class recursiveBackTrack extends Algorithm {
     }
 
     continue = () => {
-        this.execute(this.currentCell.x, this.currentCell.y)
+        this.execute()
     }
 
     step = () => {
+        console.log(this.stack);
         let x = this.currentCell.x;
         let y = this.currentCell.y;
         this.cells[y * this.width + x].visited = true;
         let neighbors = this.getValidNeighBors(x, y);
 
-        //grab a random neighbor, remove the wall between the two, recursively call this algo
         if(neighbors.length > 0) {
             let rand = neighbors[Math.floor(Math.random() * neighbors.length)];
             removeEdge({x, y},{x: rand.x, y: rand.y}, this.cellSize);
+            this.breakWall({x, y},{x: rand.x, y: rand.y});
+            this.cells[rand.y * this.width + rand.x].visited = true;
+
             this.stack.push({x,y});
             this.currentCell = rand;
+            if (this.getValidNeighBors(rand.x, rand.y).length === 0) {
+                console.log('hey');
+                let shouldReturn = true;
+                for (let i = 0; i<this.stack.length; i++) {
+                    if(this.getValidNeighBors(this.stack[i].x, this.stack[i].y).length > 0) {
+                        shouldReturn = false;
+                    }
+                } 
+                if (shouldReturn) {
+                    this.callBack();
+                    return true;
+                }
+            }
         } else if(this.stack.length === 0) {
             this.callBack();
             return true;
         } else {
             this.currentCell = this.stack.pop();
+        
             this.step()
         }
     }
@@ -94,13 +112,14 @@ class recursiveBackTrack extends Algorithm {
         if(this.stack.length === 0) {
             this.cells.forEach(cell => {
                 cell.visited = false;
+                cell.walls = 0b1111; 
             });
             this.currentCell = {x: 0, y: 0};
             drawGrid(this.height, this.width, this.cellSize);
         }
         this.finish = true;
         clearTimeout(this.timeout);
-        this.execute(this.currentCell.x, this.currentCell.y);
+        this.execute();
     }
 }
 

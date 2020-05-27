@@ -39,19 +39,22 @@ let handleClickStartBtn = () => {
     pauseBtn.removeEventListener('click', handleClickContinueBtn);
     pauseBtn.addEventListener('click', handleClickPauseBtn);
     pauseBtn.disabled = false;
+    longestPathStartBtn.disabled = true;
     if(algo instanceof Algorithm) {
         algo.pause();
     }
     init();
     let algoSelect = document.getElementById("algorithms");
     let algoClass = algorithms[algoSelect.options[algoSelect.selectedIndex].text];
-    algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, disablePause);
+    algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, callBack);
     algo.execute(0,0);
 };
 startBtn.addEventListener("click", handleClickStartBtn);
 
-let disablePause = () => {
+
+let callBack = () => {
     pauseBtn.disabled = true;
+    longestPathStartBtn.disabled = false;
 }
 
 let pauseBtn = window.document.getElementById('pauseBtn');
@@ -77,7 +80,7 @@ let handleClickFinishBtn = () => {
         init();
         let algoSelect = document.getElementById("algorithms");
         let algoClass = algorithms[algoSelect.options[algoSelect.selectedIndex].text];
-        algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, disablePause);
+        algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, callBack);
     }
     algo.finishUp();
 };
@@ -89,8 +92,9 @@ let handleClickStepBtn = () => {
         init();
         let algoSelect = document.getElementById("algorithms");
         let algoClass = algorithms[algoSelect.options[algoSelect.selectedIndex].text];
-        algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, disablePause);
+        algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, callBack);
     }
+    longestPathStartBtn.disabled = true;
     algo.step();
 }
 stepBtn.addEventListener('click', handleClickStepBtn);
@@ -100,7 +104,7 @@ let handleClickResetBtn = () => {
     init();
     let algoSelect = document.getElementById("algorithms");
     let algoClass = algorithms[algoSelect.options[algoSelect.selectedIndex].text];
-    algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, disablePause);
+    algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, callBack);
 }
 resetBtn.addEventListener('click', handleClickResetBtn);
 
@@ -109,14 +113,18 @@ runSpeedSlider.addEventListener("change", () => {
     algo.runSpeed = 1000 / runSpeedSlider.value;
 })
 
+let longestPathStartBtn = window.document.getElementById('longPathStartBtn');
+longestPathStartBtn.addEventListener('click', () => {
+    algo.longestPath();
+})
+
 let init = () => {
     // I think I might need to do this for the clearing of the edges
     ctx.canvas.width = width * cellSize + 1;
     ctx.canvas.height = height * cellSize + 1;
     cells = [];
     for(let i = 0; i <= width * height - 1; i++) {
-        let set = {id: i}
-        cells[i] = {visited: false, set: [i]};
+        cells[i] = new Cell([i]);
     }
     drawGrid(height, width, cellSize)
 }
