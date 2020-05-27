@@ -17,6 +17,6 @@ Pick a random node and do a depth-first search from that node to find the node f
 ### Possible Improvements
 
 * Add unit tests
-* Make the visuals a buit better
+* Make the visuals a bit better
 * Add more algorithms for creation of the maze
 * Add "step" functionality to the longest path part
