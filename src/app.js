@@ -119,7 +119,6 @@ longestPathStartBtn.addEventListener('click', () => {
 })
 
 let init = () => {
-    // I think I might need to do this for the clearing of the edges
     ctx.canvas.width = width * cellSize + 1;
     ctx.canvas.height = height * cellSize + 1;
     cells = [];

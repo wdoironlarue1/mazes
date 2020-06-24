@@ -37,8 +37,6 @@ export const drawGrid = (height, width, cellSize) => {
 export const drawPath = (path) => {
     restoreMaze();
     ctx.globalCompositeOperation = 'destination-over';
-    // ctx.fillStyle = "#ffffff";
-    // ctx.fillRect(0, 0, c.width, c.height)
     for(let i = 0; i < path.length; i++) {
         if(i === 0 || i === path.length - 1) {
             ctx.fillStyle = "#0000ff";
@@ -47,7 +45,6 @@ export const drawPath = (path) => {
         }
         ctx.fillRect(path[i].x * 20, path[i].y * 20, 20, 20);
     }
-    // restoreMaze();
 }
 
 export const saveMaze = () => {
