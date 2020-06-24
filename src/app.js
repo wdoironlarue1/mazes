@@ -105,6 +105,7 @@ let handleClickResetBtn = () => {
     let algoSelect = document.getElementById("algorithms");
     let algoClass = algorithms[algoSelect.options[algoSelect.selectedIndex].text];
     algo = new algoClass(cells, cellSize, width, height, 1000 / runSpeedSlider.value, callBack);
+    longestPathStartBtn.disabled = true;
 }
 resetBtn.addEventListener('click', handleClickResetBtn);
 
