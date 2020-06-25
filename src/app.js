@@ -101,6 +101,10 @@ stepBtn.addEventListener('click', handleClickStepBtn);
 
 let resetBtn = window.document.getElementById('resetBtn');
 let handleClickResetBtn = () => {
+    if(algo instanceof Algorithm) {
+        algo.pause();
+    }
+    pauseBtn.disabled = true;
     init();
     let algoSelect = document.getElementById("algorithms");
     let algoClass = algorithms[algoSelect.options[algoSelect.selectedIndex].text];
